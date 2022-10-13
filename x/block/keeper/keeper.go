@@ -52,8 +52,6 @@ func (k Keeper) AddAsset(ctx sdk.Context, msg types.MsgAddAsset) error {
 		Name:      msg.Name,
 		Denom:     msg.Denom,
 		Decimal:   msg.Decimal,
-		Price:     msg.Price,
-		AppId:     msg.AppId,
 		IbcStatus: msg.IbcStatus,
 	}
 	k.SetAssetID(ctx, asset.Id)

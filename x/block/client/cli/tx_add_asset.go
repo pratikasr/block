@@ -14,16 +14,16 @@ var _ = strconv.Itoa(0)
 
 func CmdAddAsset() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-asset [name] [denom] [decimal] [price] [app-id] [ibc-status]",
+		Use:   "add-asset [name] [denom] [decimal] [ibc-status]",
 		Short: "Broadcast message add-asset",
-		Args:  cobra.ExactArgs(6),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argName := args[0]
 			argDenom := args[1]
 			argDecimal := args[2]
-			argPrice := args[3]
-			argAppId := args[4]
-			argIbcStatus := args[5]
+			//argPrice := args[3]
+			//argAppId := args[4]
+			argIbcStatus := args[3]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -35,8 +35,6 @@ func CmdAddAsset() *cobra.Command {
 				argName,
 				argDenom,
 				argDecimal,
-				argPrice,
-				argAppId,
 				argIbcStatus,
 			)
 			if err := msg.ValidateBasic(); err != nil {
