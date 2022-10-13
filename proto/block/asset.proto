@@ -12,7 +12,7 @@ message Asset {
   string name = 2;
   string denom = 3;
   string decimal = 4;
-  string price = 5;
-  string appId = 6;
+  //string price = 5;
+  //string appId = 6;
   string ibcStatus = 7;
 }

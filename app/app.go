@@ -1,6 +1,7 @@
 package app
 
 import (
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	"io"
 	"net/http"
 	"os"
@@ -101,6 +102,7 @@ import (
 	blockmodulekeeper "block/x/block/keeper"
 	blockmoduletypes "block/x/block/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+	tv2_0 "block/app/upgrades/v2"
 )
 
 const (
@@ -232,7 +234,8 @@ type App struct {
 	mm *module.Manager
 
 	// sm is the simulation manager
-	sm *module.SimulationManager
+	sm           *module.SimulationManager
+	configurator module.Configurator
 }
 
 // New returns a reference to an initialized blockchain app
@@ -701,6 +704,30 @@ func GetMaccPerms() map[string][]string {
 	return dupMaccPerms
 }
 
+func (a *App) registerUpgradeHandlers() {
+	a.UpgradeKeeper.SetUpgradeHandler(
+		tv2_0.UpgradeName,
+		tv2_0.CreateUpgradeHandlerV20(a.mm, a.configurator),
+	)
+
+	// When a planned update height is reached, the old binary will panic
+	// writing on disk the height and name of the update that triggered it
+	// This will read that value, and execute the preparations for the upgrade.
+	upgradeInfo, err := a.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(err)
+	}
+
+	var storeUpgrades *storetypes.StoreUpgrades
+
+	storeUpgrades = upgradeHandlers(upgradeInfo, a, storeUpgrades)
+
+	if storeUpgrades != nil {
+		// configure store loader that checks if version == upgradeHeight and applies store upgrades
+		a.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, storeUpgrades))
+	}
+}
+
 // initParamsKeeper init params keeper and its subspaces
 func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino, key, tkey sdk.StoreKey) paramskeeper.Keeper {
 	paramsKeeper := paramskeeper.NewKeeper(appCodec, legacyAmino, key, tkey)
@@ -725,4 +752,12 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 // SimulationManager implements the SimulationApp interface
 func (app *App) SimulationManager() *module.SimulationManager {
 	return app.sm
+}
+
+func upgradeHandlers(upgradeInfo storetypes.UpgradeInfo, a *App, storeUpgrades *storetypes.StoreUpgrades) *storetypes.StoreUpgrades {
+	switch {
+	case upgradeInfo.Name == tv2_0.UpgradeName && !a.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height):
+		storeUpgrades = &storetypes.StoreUpgrades{}
+	}
+	return storeUpgrades
 }

@@ -62,12 +62,11 @@ paths:
                     type: string
                   decimal:
                     type: string
-                  price:
-                    type: string
-                  appId:
-                    type: string
                   ibcStatus:
                     type: string
+                    title: |-
+                      string price = 5;
+                      string appId = 6;
         default:
           description: An unexpected error response.
           schema:
@@ -28381,12 +28380,11 @@ definitions:
         type: string
       decimal:
         type: string
-      price:
-        type: string
-      appId:
-        type: string
       ibcStatus:
         type: string
+        title: |-
+          string price = 5;
+          string appId = 6;
   block.block.MsgAddAssetResponse:
     type: object
   block.block.Params:
@@ -28414,12 +28412,11 @@ definitions:
             type: string
           decimal:
             type: string
-          price:
-            type: string
-          appId:
-            type: string
           ibcStatus:
             type: string
+            title: |-
+              string price = 5;
+              string appId = 6;
   google.protobuf.Any:
     type: object
     properties:

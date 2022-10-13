@@ -15,8 +15,6 @@ export interface BlockAsset {
   name?: string;
   denom?: string;
   decimal?: string;
-  price?: string;
-  appId?: string;
   ibcStatus?: string;
 }
 

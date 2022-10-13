@@ -8,8 +8,10 @@ export interface MsgAddAsset {
   name: string;
   denom: string;
   decimal: string;
-  price: string;
-  appId: string;
+  /**
+   * string price = 5;
+   *  string appId = 6;
+   */
   ibcStatus: string;
 }
 
@@ -20,8 +22,6 @@ const baseMsgAddAsset: object = {
   name: "",
   denom: "",
   decimal: "",
-  price: "",
-  appId: "",
   ibcStatus: "",
 };
 
@@ -38,12 +38,6 @@ export const MsgAddAsset = {
     }
     if (message.decimal !== "") {
       writer.uint32(34).string(message.decimal);
-    }
-    if (message.price !== "") {
-      writer.uint32(42).string(message.price);
-    }
-    if (message.appId !== "") {
-      writer.uint32(50).string(message.appId);
     }
     if (message.ibcStatus !== "") {
       writer.uint32(58).string(message.ibcStatus);
@@ -69,12 +63,6 @@ export const MsgAddAsset = {
           break;
         case 4:
           message.decimal = reader.string();
-          break;
-        case 5:
-          message.price = reader.string();
-          break;
-        case 6:
-          message.appId = reader.string();
           break;
         case 7:
           message.ibcStatus = reader.string();
@@ -109,16 +97,6 @@ export const MsgAddAsset = {
     } else {
       message.decimal = "";
     }
-    if (object.price !== undefined && object.price !== null) {
-      message.price = String(object.price);
-    } else {
-      message.price = "";
-    }
-    if (object.appId !== undefined && object.appId !== null) {
-      message.appId = String(object.appId);
-    } else {
-      message.appId = "";
-    }
     if (object.ibcStatus !== undefined && object.ibcStatus !== null) {
       message.ibcStatus = String(object.ibcStatus);
     } else {
@@ -133,8 +111,6 @@ export const MsgAddAsset = {
     message.name !== undefined && (obj.name = message.name);
     message.denom !== undefined && (obj.denom = message.denom);
     message.decimal !== undefined && (obj.decimal = message.decimal);
-    message.price !== undefined && (obj.price = message.price);
-    message.appId !== undefined && (obj.appId = message.appId);
     message.ibcStatus !== undefined && (obj.ibcStatus = message.ibcStatus);
     return obj;
   },
@@ -160,16 +136,6 @@ export const MsgAddAsset = {
       message.decimal = object.decimal;
     } else {
       message.decimal = "";
-    }
-    if (object.price !== undefined && object.price !== null) {
-      message.price = object.price;
-    } else {
-      message.price = "";
-    }
-    if (object.appId !== undefined && object.appId !== null) {
-      message.appId = object.appId;
-    } else {
-      message.appId = "";
     }
     if (object.ibcStatus !== undefined && object.ibcStatus !== null) {
       message.ibcStatus = object.ibcStatus;
