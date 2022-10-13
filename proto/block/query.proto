@@ -5,6 +5,8 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "block/params.proto";
+import "block/asset.proto";
+
 // this line is used by starport scaffolding # 1
 
 option go_package = "block/x/block/types";
@@ -33,9 +35,12 @@ message QueryParamsResponse {
 }
 
 message QueryShowAssetRequest {
+  uint64 id = 1;
 }
 
 message QueryShowAssetResponse {
+  Asset asset = 1
+  [(gogoproto.nullable) = false, (gogoproto.moretags) = "yaml:\"asset\""];
 }
 
 // this line is used by starport scaffolding # 3

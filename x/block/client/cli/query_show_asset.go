@@ -13,9 +13,9 @@ var _ = strconv.Itoa(0)
 
 func CmdShowAsset() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-asset",
+		Use:   "show-asset [id]",
 		Short: "Query show-asset",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -23,9 +23,14 @@ func CmdShowAsset() *cobra.Command {
 				return err
 			}
 
+			id, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryShowAssetRequest{}
+			params := &types.QueryShowAssetRequest{Id: id}
 
 			res, err := queryClient.ShowAsset(cmd.Context(), params)
 			if err != nil {

@@ -49,6 +49,25 @@ paths:
           description: A successful response.
           schema:
             type: object
+            properties:
+              asset:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  name:
+                    type: string
+                  denom:
+                    type: string
+                  decimal:
+                    type: string
+                  price:
+                    type: string
+                  appId:
+                    type: string
+                  ibcStatus:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -67,6 +86,12 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: string
+          format: uint64
       tags:
         - Query
   /cosmos/auth/v1beta1/accounts:
@@ -28344,6 +28369,24 @@ paths:
       tags:
         - Query
 definitions:
+  block.block.Asset:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      name:
+        type: string
+      denom:
+        type: string
+      decimal:
+        type: string
+      price:
+        type: string
+      appId:
+        type: string
+      ibcStatus:
+        type: string
   block.block.MsgAddAssetResponse:
     type: object
   block.block.Params:
@@ -28358,6 +28401,25 @@ definitions:
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   block.block.QueryShowAssetResponse:
     type: object
+    properties:
+      asset:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          name:
+            type: string
+          denom:
+            type: string
+          decimal:
+            type: string
+          price:
+            type: string
+          appId:
+            type: string
+          ibcStatus:
+            type: string
   google.protobuf.Any:
     type: object
     properties:

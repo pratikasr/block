@@ -9,6 +9,17 @@
  * ---------------------------------------------------------------
  */
 
+export interface BlockAsset {
+  /** @format uint64 */
+  id?: string;
+  name?: string;
+  denom?: string;
+  decimal?: string;
+  price?: string;
+  appId?: string;
+  ibcStatus?: string;
+}
+
 export type BlockMsgAddAssetResponse = object;
 
 /**
@@ -24,7 +35,9 @@ export interface BlockQueryParamsResponse {
   params?: BlockParams;
 }
 
-export type BlockQueryShowAssetResponse = object;
+export interface BlockQueryShowAssetResponse {
+  asset?: BlockAsset;
+}
 
 export interface ProtobufAny {
   "@type"?: string;
@@ -229,7 +242,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title block/genesis.proto
+ * @title block/asset.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
@@ -257,10 +270,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @summary Queries a list of ShowAsset items.
    * @request GET:/block/block/show_asset
    */
-  queryShowAsset = (params: RequestParams = {}) =>
+  queryShowAsset = (query?: { id?: string }, params: RequestParams = {}) =>
     this.request<BlockQueryShowAssetResponse, RpcStatus>({
       path: `/block/block/show_asset`,
       method: "GET",
+      query: query,
       format: "json",
       ...params,
     });

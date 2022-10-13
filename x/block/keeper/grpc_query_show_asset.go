@@ -9,15 +9,21 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) ShowAsset(goCtx context.Context, req *types.QueryShowAssetRequest) (*types.QueryShowAssetResponse, error) {
+func (q Keeper) ShowAsset(c context.Context, req *types.QueryShowAssetRequest) (*types.QueryShowAssetResponse, error) {
+
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "request cannot be empty")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx := sdk.UnwrapSDKContext(c)
 
-	// TODO: Process the query
-	_ = ctx
+	item, found := q.GetAsset(ctx, req.Id)
+	if !found {
+		return nil, status.Errorf(codes.NotFound, "asset does not exist for id %d", req.Id)
+	}
 
-	return &types.QueryShowAssetResponse{}, nil
+	return &types.QueryShowAssetResponse{
+		Asset: item,
+	}, nil
+
 }

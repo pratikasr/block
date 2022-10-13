@@ -1,5 +1,7 @@
 package types
 
+import sdk "github.com/cosmos/cosmos-sdk/types"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "block"
@@ -17,6 +19,11 @@ const (
 	MemStoreKey = "mem_block"
 )
 
-func KeyPrefix(p string) []byte {
-	return []byte(p)
+var (
+	AssetIDKey     = []byte{0x01}
+	AssetKeyPrefix = []byte{0x02}
+)
+
+func AssetKey(id uint64) []byte {
+	return append(AssetKeyPrefix, sdk.Uint64ToBigEndian(id)...)
 }

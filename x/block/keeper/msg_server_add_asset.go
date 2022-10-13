@@ -7,11 +7,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) AddAsset(goCtx context.Context, msg *types.MsgAddAsset) (*types.MsgAddAssetResponse, error) {
+func (m msgServer) AddAsset(goCtx context.Context, msg *types.MsgAddAsset) (*types.MsgAddAssetResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// TODO: Handling the message
-	_ = ctx
-
+	if err := m.Keeper.AddAsset(ctx, *msg); err != nil {
+		return nil, err
+	}
 	return &types.MsgAddAssetResponse{}, nil
 }
