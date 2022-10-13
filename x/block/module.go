@@ -142,7 +142,7 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 
 	migrator := keeper.NewMigrator(am.keeper)
 
-	if err := cfg.RegisterMigration(types.ModuleName, 1, migrator.MigrateToV2); err != nil {
+	if err := cfg.RegisterMigration(types.ModuleName, 2.0, migrator.MigrateToV2); err != nil {
 		panic(fmt.Errorf("failed to migrate %s to v5.0.0beta: %w", types.ModuleName, err))
 	}
 }
