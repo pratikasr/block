@@ -13,6 +13,10 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
+export interface QueryShowAssetRequest {}
+
+export interface QueryShowAssetResponse {}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -110,10 +114,88 @@ export const QueryParamsResponse = {
   },
 };
 
+const baseQueryShowAssetRequest: object = {};
+
+export const QueryShowAssetRequest = {
+  encode(_: QueryShowAssetRequest, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryShowAssetRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryShowAssetRequest } as QueryShowAssetRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryShowAssetRequest {
+    const message = { ...baseQueryShowAssetRequest } as QueryShowAssetRequest;
+    return message;
+  },
+
+  toJSON(_: QueryShowAssetRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<QueryShowAssetRequest>): QueryShowAssetRequest {
+    const message = { ...baseQueryShowAssetRequest } as QueryShowAssetRequest;
+    return message;
+  },
+};
+
+const baseQueryShowAssetResponse: object = {};
+
+export const QueryShowAssetResponse = {
+  encode(_: QueryShowAssetResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryShowAssetResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryShowAssetResponse } as QueryShowAssetResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryShowAssetResponse {
+    const message = { ...baseQueryShowAssetResponse } as QueryShowAssetResponse;
+    return message;
+  },
+
+  toJSON(_: QueryShowAssetResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<QueryShowAssetResponse>): QueryShowAssetResponse {
+    const message = { ...baseQueryShowAssetResponse } as QueryShowAssetResponse;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
+  /** Queries a list of ShowAsset items. */
+  ShowAsset(request: QueryShowAssetRequest): Promise<QueryShowAssetResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -125,6 +207,14 @@ export class QueryClientImpl implements Query {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("block.block.Query", "Params", data);
     return promise.then((data) => QueryParamsResponse.decode(new Reader(data)));
+  }
+
+  ShowAsset(request: QueryShowAssetRequest): Promise<QueryShowAssetResponse> {
+    const data = QueryShowAssetRequest.encode(request).finish();
+    const promise = this.rpc.request("block.block.Query", "ShowAsset", data);
+    return promise.then((data) =>
+      QueryShowAssetResponse.decode(new Reader(data))
+    );
   }
 }
 

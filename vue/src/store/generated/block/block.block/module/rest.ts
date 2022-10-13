@@ -24,6 +24,8 @@ export interface BlockQueryParamsResponse {
   params?: BlockParams;
 }
 
+export type BlockQueryShowAssetResponse = object;
+
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -227,7 +229,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title block/block.proto
+ * @title block/genesis.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
@@ -242,6 +244,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<BlockQueryParamsResponse, RpcStatus>({
       path: `/block/block/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryShowAsset
+   * @summary Queries a list of ShowAsset items.
+   * @request GET:/block/block/show_asset
+   */
+  queryShowAsset = (params: RequestParams = {}) =>
+    this.request<BlockQueryShowAssetResponse, RpcStatus>({
+      path: `/block/block/show_asset`,
       method: "GET",
       format: "json",
       ...params,
