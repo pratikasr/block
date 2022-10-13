@@ -1,9 +1,10 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Asset } from "./module/types/block/block"
 import { Params } from "./module/types/block/params"
 
 
-export { Params };
+export { Asset, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -44,6 +45,7 @@ const getDefaultState = () => {
 				Params: {},
 				
 				_Structure: {
+						Asset: getStructure(Asset.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},
@@ -135,7 +137,35 @@ export default {
 		},
 		
 		
+		async sendMsgAddAsset({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgAddAsset(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgAddAsset:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgAddAsset:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
+		async MsgAddAsset({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgAddAsset(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgAddAsset:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgAddAsset:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		
 	}
 }

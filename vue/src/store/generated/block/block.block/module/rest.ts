@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type BlockMsgAddAssetResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
@@ -225,7 +227,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title block/genesis.proto
+ * @title block/block.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {

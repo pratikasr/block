@@ -7,7 +7,21 @@ option go_package = "block/x/block/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc AddAsset(MsgAddAsset) returns (MsgAddAssetResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgAddAsset {
+  string creator = 1;
+  string name = 2;
+  string denom = 3;
+  string decimal = 4;
+  string price = 5;
+  string appId = 6;
+  string ibcStatus = 7;
+}
+
+message MsgAddAssetResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -28315,6 +28315,8 @@ paths:
       tags:
         - Query
 definitions:
+  block.block.MsgAddAssetResponse:
+    type: object
   block.block.Params:
     type: object
     description: Params defines the parameters for the module.
