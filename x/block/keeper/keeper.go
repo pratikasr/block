@@ -15,7 +15,6 @@ import (
 type (
 	Keeper struct {
 		cdc        codec.BinaryCodec
-		key        sdk.StoreKey
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
@@ -94,7 +93,7 @@ func (k Keeper) GetAssetID(ctx sdk.Context) uint64 {
 }
 
 func (k Keeper) Store(ctx sdk.Context) sdk.KVStore {
-	return ctx.KVStore(k.key)
+	return ctx.KVStore(k.storeKey)
 }
 
 func (k Keeper) SetAsset(ctx sdk.Context, asset types.Asset) {

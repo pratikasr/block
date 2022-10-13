@@ -1,9 +1,8 @@
 package keeper
 
 import (
-	"context"
-
 	"block/x/block/types"
+	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
